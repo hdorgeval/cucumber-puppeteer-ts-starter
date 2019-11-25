@@ -1,6 +1,9 @@
 import { getLogger } from '../loggers/common-logger';
 import { Before, BeforeAll, setDefaultTimeout, After, AfterAll } from 'cucumber';
 import { PuppeteerController } from 'puppeteer-core-controller';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const isCI = require('is-ci');
+
 setDefaultTimeout(10000);
 
 Before({ tags: '@ignore' }, async function() {
@@ -28,9 +31,20 @@ Before({ tags: '@withCursor' }, async function() {
 
 Before({ tags: '@debug' }, async function() {
   this.debug = true;
+  this.pptc.initWith({ headless: false });
 });
 
 After(async function() {
+  if (this.pptc && isCI) {
+    await this.pptc.close();
+    return;
+  }
+
+  if (this.pptc && this.debug) {
+    // do not close the browser
+    return;
+  }
+
   if (this.pptc) {
     await this.pptc.close();
   }
@@ -60,6 +74,8 @@ Before({ tags: '@simpleLogger and @debug' }, async function() {
 BeforeAll(async function() {
   // eslint-disable-next-line no-console
   console.log('Before All');
+  // eslint-disable-next-line no-console
+  isCI ? console.log('running in CI ...') : console.log('running on local machine ...');
 });
 
 AfterAll(async function() {
