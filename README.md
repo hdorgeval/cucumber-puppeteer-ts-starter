@@ -1,4 +1,5 @@
-# cucumber-ts-starter
+# cucumber-puppeteer-ts-starter
+
 Starter project to write and debug cucumber-js features in TypeScript language for 2E2 tests with puppeteer-core.
 
 ## After cloning the repo
