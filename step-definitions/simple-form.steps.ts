@@ -18,9 +18,16 @@ Given('I set the field {string} to {string}', async function(
   console.log({ fieldLabel, fieldValue });
 });
 
-Given('I click on the {string} button', async function(buttonName: string) {
+Given('I open the {string} page', async function(pageName: string) {
   await cast(this.pptc)
     .find('a.btn')
-    .withExactText(buttonName)
+    .withExactText(pageName)
+    .click();
+});
+
+Given('I select the {string} component', async function(componentName: string) {
+  await cast(this.pptc)
+    .find('a.nav-link')
+    .withExactText(componentName)
     .click();
 });

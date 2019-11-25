@@ -8,8 +8,8 @@ Submit a form on https://reactstrap.github.io/components/form
 
 Background: Open the form
   Given I open the web site "https://reactstrap.github.io"
-  And I click on the 'Components' button
-  #And I select the 'Form' component
+  And I open the "Components" page
+  And I select the "Form" component
 
 @debug @only 
 Scenario: Submit the Form
