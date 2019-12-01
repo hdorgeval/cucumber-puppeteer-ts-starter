@@ -1,6 +1,6 @@
 import { getLogger } from '../loggers/common-logger';
-import { Before, BeforeAll, setDefaultTimeout, After, AfterAll } from 'cucumber';
-import { PuppeteerController } from 'puppeteer-core-controller';
+import { Before, BeforeAll, setDefaultTimeout, After, AfterAll, Status } from 'cucumber';
+import { PuppeteerController, cast } from 'puppeteer-core-controller';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const isCI = require('is-ci');
 
@@ -42,7 +42,12 @@ Before({ tags: '@live' }, async function() {
   this.live = true;
 });
 
-After(async function() {
+After(async function(testCase) {
+  if (testCase.result.status === Status.FAILED && this.pptc) {
+    const screenshot: string = await cast(this.pptc).takeFullPageScreenshotAsBase64();
+    this.attach(screenshot, 'image/png');
+  }
+
   if (this.pptc && isCI) {
     await this.pptc.close();
     return;
