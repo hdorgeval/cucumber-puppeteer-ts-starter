@@ -10,6 +10,10 @@ Starter project to write and debug cucumber-js features in TypeScript language f
 
 * run the command `npm test`.
 
+## To let the browser opened after test execution
+
+* tag the scenario with `@live`
+
 ## To debug a scenario in Visual Studio Code
 
 * tag the scenario with `@only` and `@debug`
@@ -19,6 +23,7 @@ Starter project to write and debug cucumber-js features in TypeScript language f
 ## To run only specific scenarios
 
 * tag the scenario(s) with `@only`
+* run the command `npm run test-only`.
 
 ## To ignore a scenario
 

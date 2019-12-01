@@ -25,6 +25,8 @@ export class CustomWorld {
   public attach: AttachFn;
   public cliArgs: CliArgs;
   public logger: Logger;
+  public live: boolean;
+  public debug: boolean;
 
   /**
    *
@@ -33,6 +35,8 @@ export class CustomWorld {
     this.attach = attach;
     this.cliArgs = cliArgs;
     this.logger = getLogger('@noOpLogger');
+    this.live = false;
+    this.debug = false;
   }
 }
 

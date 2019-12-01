@@ -6,18 +6,23 @@ const isCI = require('is-ci');
 
 setDefaultTimeout(10000);
 
-Before({ tags: '@ignore' }, async function() {
-  return 'skipped';
-});
-
 Before(async function() {
   this.pptc = new PuppeteerController();
 });
 
-Before({ tags: '@headless' }, async function() {
+Before({ tags: '@ignore' }, async function() {
+  return 'skipped';
+});
+
+Before({ tags: '@headless and not @live and not @debug' }, async function() {
+  // eslint-disable-next-line no-console
+  console.log('headless mode');
   this.pptc.initWith({ headless: true });
 });
-Before({ tags: '@headfull' }, async function() {
+
+Before({ tags: '@headfull or @live or @debug' }, async function() {
+  // eslint-disable-next-line no-console
+  console.log('headfull mode');
   this.pptc.initWith({ headless: false });
 });
 
@@ -31,7 +36,10 @@ Before({ tags: '@withCursor' }, async function() {
 
 Before({ tags: '@debug' }, async function() {
   this.debug = true;
-  this.pptc.initWith({ headless: false });
+});
+
+Before({ tags: '@live' }, async function() {
+  this.live = true;
 });
 
 After(async function() {
@@ -40,7 +48,7 @@ After(async function() {
     return;
   }
 
-  if (this.pptc && this.debug) {
+  if (this.pptc && this.live) {
     // do not close the browser
     return;
   }

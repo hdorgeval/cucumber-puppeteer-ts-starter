@@ -1,4 +1,4 @@
-@noOpLogger @withMaxSizeWindow @headfull @withCursor
+@noOpLogger @withMaxSizeWindow @headless @withCursor
 Feature: Simple Form
 Submit a form on https://reactstrap.github.io/components/form
 
@@ -11,7 +11,10 @@ Background: Open the form
   And I open the "Components" page
   And I select the "Form" component
 
-@debug @only 
+# tag with @live to keep the browser opened at the end of test
+# tag with @only to run only this scenario
+# tag with both @debug @only to debug this scenario
+# tag with @ignore to skip this scenario
 Scenario: Submit the Form
   Given I set the field "Email" to "foo@bar.com"
   #And I set the "Paswword" to "don't tell!"
