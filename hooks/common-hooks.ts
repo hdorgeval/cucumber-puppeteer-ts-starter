@@ -17,7 +17,15 @@ Before({ tags: '@ignore' }, async function() {
 Before({ tags: '@headless and not @live and not @debug' }, async function() {
   // eslint-disable-next-line no-console
   console.log('headless mode');
-  this.pptc.initWith({ headless: true });
+  cast(this.pptc).initWith({ headless: true });
+});
+
+Before({ tags: '@recordFailedRequests' }, async function() {
+  cast(this.pptc).recordFailedRequests();
+});
+
+Before({ tags: '@recordPageErrors' }, async function() {
+  cast(this.pptc).recordPageErrors();
 });
 
 Before({ tags: '@headfull or @live or @debug' }, async function() {
@@ -61,6 +69,58 @@ After(async function(testCase) {
   if (this.pptc) {
     await this.pptc.close();
   }
+});
+
+After({ tags: '@recordFailedRequests' }, async function() {
+  const failedRequests = cast(this.pptc).getFailedRequests();
+  if (failedRequests.length === 0) {
+    return;
+  }
+
+  failedRequests.forEach((failedRequest) => {
+    const response = failedRequest.response();
+    if (response === null) {
+      const requestInfo = {
+        headers: failedRequest.headers(),
+        error: failedRequest.failure(),
+        response: null,
+        url: failedRequest.url(),
+      };
+      this.attach(JSON.stringify(requestInfo, null, 2), 'application/json');
+      return;
+    }
+
+    const requestWithResponseInfo = {
+      headers: failedRequest.headers(),
+      url: failedRequest.url(),
+      response: {
+        status: response.status(),
+        statusText: response.statusText(),
+      },
+    };
+    this.attach(JSON.stringify(requestWithResponseInfo, null, 2), 'application/json');
+    return;
+  });
+
+  throw new Error(`There are ${failedRequests.length} failed request(s)`);
+});
+
+After({ tags: '@recordPageErrors' }, async function() {
+  const pageErrors = cast(this.pptc).getPageErrors();
+  if (pageErrors.length === 0) {
+    return;
+  }
+
+  pageErrors.forEach((pageError) => {
+    const error = `
+      ${pageError.name ? pageError.name : ''} 
+      ${pageError.message ? pageError.message : ''} 
+      ${pageError.stack ? pageError.stack : ''}
+      `;
+    this.attach(error);
+  });
+
+  throw new Error(`There are ${pageErrors.length} error(s) in the page`);
 });
 
 /**

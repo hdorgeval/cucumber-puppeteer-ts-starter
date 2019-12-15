@@ -1,4 +1,4 @@
-@noOpLogger @withMaxSizeWindow @headless @withCursor
+@noOpLogger @withMaxSizeWindow @headless @withCursor @recordFailedRequests @recordPageErrors
 Feature: Simple Form
 Submit a form on https://reactstrap.github.io/components/form
 
@@ -15,9 +15,10 @@ Background: Open the form
 # tag with @only to run only this scenario
 # tag with both @debug @only to debug this scenario
 # tag with @ignore to skip this scenario
+
 Scenario: Submit the Form
   Given I set the field "Email" to "foo@bar.com"
-  #And I set the "Paswword" to "don't tell!"
-  #And I select '3' in the 'Select' list
+  And I set the field "Password" to "don't tell!"
+  And I select "3" in the "Select" list
   #When I submit the form
   #Then the 'Email' field is empty

@@ -13,9 +13,11 @@ Given('I set the field {string} to {string}', async function(
   fieldLabel: string,
   fieldValue: string,
 ) {
-  // Write code here that turns the phrase above into concrete actions
-  // eslint-disable-next-line no-console
-  console.log({ fieldLabel, fieldValue });
+  await cast(this.pptc)
+    .find('label')
+    .withExactText(fieldLabel)
+    .click()
+    .typeText(fieldValue);
 });
 
 Given('I open the {string} page', async function(pageName: string) {
@@ -29,5 +31,15 @@ Given('I select the {string} component', async function(componentName: string) {
   await cast(this.pptc)
     .find('a.nav-link')
     .withExactText(componentName)
+    .click();
+});
+
+Given('I select {string} in the {string} list', async function(
+  _option: string,
+  fieldLabel: string,
+) {
+  await cast(this.pptc)
+    .find('label')
+    .withExactText(fieldLabel)
     .click();
 });
