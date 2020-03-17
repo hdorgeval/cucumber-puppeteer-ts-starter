@@ -41,7 +41,7 @@
     "cucumber-pretty": "6.0.0",
     "is-ci": "2.0.0",
     "jsome": "2.5.0",
-    "minimist": "1.2.0",
+    "minimist": "1.2.2",
     "puppeteer-core-controller": "1.16.0",
     "rimraf": "3.0.0",
     "ts-node": "8.5.4",
